@@ -35,7 +35,6 @@
     padding-bottom: 100px;
   }
 
-  /* ===== HEADER ===== */
   header {
     text-align: center;
     padding: 25px 15px 15px;
@@ -61,7 +60,6 @@
     opacity: 0.85;
   }
 
-  /* ===== TABS ===== */
   .tabs-container {
     position: sticky;
     top: 0;
@@ -113,7 +111,6 @@
     box-shadow: 0 5px 15px rgba(123, 47, 247, 0.4);
   }
 
-  /* ===== MAIN CONTENT ===== */
   .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -146,7 +143,6 @@
 
   .section-title .emoji { font-size: 1.5em; }
 
-  /* ===== LETTERS GRID ===== */
   .letters-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -250,7 +246,6 @@
     transform: scale(1.2);
   }
 
-  /* ===== WORD BUILDING ===== */
   .word-builder {
     background: var(--card-bg);
     border-radius: 25px;
@@ -399,7 +394,6 @@
   .word-result.success { color: var(--success); }
   .word-result.error { color: #ff5252; }
 
-  /* ===== FLOATING BUTTONS ===== */
   .floating-buttons {
     position: fixed;
     bottom: 20px;
@@ -424,6 +418,7 @@
     transition: all 0.3s;
     position: relative;
     color: white;
+    text-decoration: none;
   }
 
   .fab:hover {
@@ -472,7 +467,6 @@
     .fab-label { display: none; }
   }
 
-  /* ===== TOAST ===== */
   .toast {
     position: fixed;
     bottom: 100px;
@@ -493,7 +487,6 @@
 
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* ===== FOOTER ===== */
   footer {
     text-align: center;
     padding: 20px;
@@ -502,7 +495,6 @@
     font-size: 0.85rem;
   }
 
-  /* ===== RESPONSIVE ===== */
   @media (max-width: 480px) {
     .letters-grid {
       grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
@@ -523,9 +515,7 @@
 </header>
 
 <div class="tabs-container">
-  <div class="tabs" id="tabsContainer">
-    <!-- سيتم إنشاؤها بواسطة JS -->
-  </div>
+  <div class="tabs" id="tabsContainer"></div>
 </div>
 
 <div class="container">
@@ -594,7 +584,6 @@
   <p id="footerText">💜 صُنع بحب لتعليم الأطفال — تواصل معنا عبر واتساب</p>
 </footer>
 
-<!-- Floating Buttons -->
 <div class="floating-buttons">
   <button class="fab fab-language" onclick="toggleLanguage()" title="تبديل اللغة">
     🌐
@@ -613,7 +602,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ============ البيانات ============
+// ============ البيانات الأساسية ============
 const ARABIC_LETTERS = [
   { letter: 'أ', name: 'ألف' },
   { letter: 'ب', name: 'باء' },
@@ -718,10 +707,7 @@ const TRANSLATIONS = {
     successWord: '🎉 أحسنت! كلمة صحيحة',
     notWord: '❌ ليست كلمة معروفة، حاول مرة أخرى',
     completeWord: '⚠️ أكمل الحروف أولاً',
-    copied: 'تم النسخ',
-    addLetter: 'أضف حرفاً',
-    clickToRemove: 'اضغط لإزالة الحرف',
-    languageChanged: 'تم التبديل إلى العربية',
+    languageChanged: 'تم التبديل إلى الإنجليزية',
     themeDark: 'تم تفعيل المظهر الليلي',
     themeLight: 'تم تفعيل المظهر النهاري'
   },
@@ -760,83 +746,48 @@ const TRANSLATIONS = {
     successWord: '🎉 Great! Correct word',
     notWord: '❌ Not a known word, try again',
     completeWord: '⚠️ Complete the letters first',
-    copied: 'Copied',
-    addLetter: 'Add a letter',
-    clickToRemove: 'Click to remove letter',
     languageChanged: 'Switched to English',
     themeDark: 'Dark mode activated',
     themeLight: 'Light mode activated'
   }
 };
 
-// ============ كلمات مكونة من حرفين (عربي) ============
-const AR_WORDS_2 = ['أب', 'أم', 'يد', 'فم', 'دم', 'سم', 'هم', 'كم', 'لم', 'ما', 'لا', 'في', 'من', 'عن', 'قد', 'هل', 'بل', 'كل', 'بك', 'لك', 'هو', 'هي', 'أخ', 'أخت'.substring(0,2), 'جد', 'عم', 'خال'.substring(0,2), 'ابن'.substring(0,2), 'بنت'.substring(0,2)];
-
-// كلمات مكونة من 3 حروف (عربي)
-const AR_WORDS_3 = ['كتب', 'درس', 'علم', 'قلم', 'باب', 'دار', 'نور', 'شمس', 'قمر', 'نجم', 'بحر', 'نهر', 'جبل', 'شجر', 'زهر', 'طير', 'سمك', 'أسد', 'فيل', 'جمل', 'خيل', 'غنم', 'بيت', 'ماء', 'خبز', 'لبن', 'عسل', 'تمر', 'تين', 'رطب'];
-
-// كلمات إنجليزية من حرفين
+// ============ قوائم الكلمات ============
+const AR_WORDS_2 = ['أب', 'أم', 'يد', 'فم', 'دم', 'سم', 'هم', 'كم', 'لم', 'ما', 'لا', 'في', 'من', 'عن', 'قد', 'هل', 'بل', 'كل', 'بك', 'لك', 'هو', 'هي', 'أخ', 'جد', 'عم'];
+const AR_WORDS_3 = ['كتب', 'درس', 'علم', 'قلم', 'باب', 'دار', 'نور', 'شمس', 'قمر', 'نجم', 'بحر', 'نهر', 'جبل', 'شجر', 'زهر', 'طير', 'سمك', 'أسد', 'فيل', 'جمل', 'خيل', 'غنم', 'بيت', 'ماء', 'خبز', 'لبن', 'عسل', 'تمر', 'تين'];
 const EN_WORDS_2 = ['at', 'in', 'on', 'it', 'is', 'be', 'to', 'do', 'go', 'no', 'so', 'up', 'us', 'we', 'he', 'me', 'my', 'by', 'or', 'an', 'as', 'if', 'of'];
-
-// كلمات إنجليزية من 3 حروف
-const EN_WORDS_3 = ['cat', 'dog', 'sun', 'moon'.substring(0,3), 'car', 'bus', 'box', 'pen', 'bag', 'cup', 'hat', 'bat', 'rat', 'mat', 'sit', 'run', 'fly', 'eat', 'red', 'big', 'top', 'man', 'boy', 'girl'.substring(0,3), 'book'.substring(0,3), 'fish'.substring(0,3), 'bird'.substring(0,3)];
+const EN_WORDS_3 = ['cat', 'dog', 'sun', 'car', 'bus', 'box', 'pen', 'bag', 'cup', 'hat', 'bat', 'rat', 'mat', 'sit', 'run', 'fly', 'eat', 'red', 'big', 'top', 'man', 'boy'];
 
 // ============ دوال الترجمة ============
 function t(key) {
   const keys = key.split('.');
   let value = TRANSLATIONS[currentLang];
   for (const k of keys) {
-    value = value[k];
+    if (value && value[k] !== undefined) {
+      value = value[k];
+    } else {
+      return key;
+    }
   }
-  return value || key;
+  return value;
 }
 
-function updateUILanguage() {
-  const lang = currentLang;
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-  document.getElementById('mainTitle').textContent = t('mainTitle');
-  document.getElementById('subTitle').textContent = t('subTitle');
-  document.getElementById('titleLetters').textContent = t('titles.letters');
-  document.getElementById('titleFatha').textContent = t('titles.fatha');
-  document.getElementById('titleDamma').textContent = t('titles.damma');
-  document.getElementById('titleKasra').textContent = t('titles.kasra');
-  document.getElementById('titleTanween').textContent = t('titles.tanween');
-  document.getElementById('titleShadda').textContent = t('titles.shadda');
-  document.getElementById('titleWords2').textContent = t('titles.words2');
-  document.getElementById('titleWords3').textContent = t('titles.words3');
-  document.getElementById('word2Title').textContent = t('word2Title');
-  document.getElementById('word3Title').textContent = t('word3Title');
-  document.getElementById('listen2').textContent = t('listen');
-  document.getElementById('listen3').textContent = t('listen');
-  document.getElementById('clear2').textContent = t('clear');
-  document.getElementById('clear3').textContent = t('clear');
-  document.getElementById('random2').textContent = t('random');
-  document.getElementById('random3').textContent = t('random');
-  document.getElementById('footerText').textContent = t('footer');
-  document.getElementById('labelLang').textContent = t('labelLang');
-  document.getElementById('labelTheme').textContent = t('labelTheme');
-  document.getElementById('labelWhats').textContent = t('labelWhats');
-
-  // تحديث التبويبات
-  document.querySelectorAll('.tab').forEach(tab => {
-    const section = tab.dataset.section;
-    tab.textContent = t(`tabs.${section}`);
-  });
-
-  renderAll();
+function safeSetText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
 }
 
-// ============ إنشاء التبويبات ============
+// ============ بناء التبويبات ============
 function createTabs() {
   const sections = ['letters', 'fatha', 'damma', 'kasra', 'tanween', 'shadda', 'words2', 'words3'];
   const container = document.getElementById('tabsContainer');
+  if (!container) return;
   container.innerHTML = '';
   sections.forEach(section => {
     const tab = document.createElement('button');
     tab.className = 'tab' + (section === currentSection ? ' active' : '');
     tab.dataset.section = section;
+    tab.textContent = t(`tabs.${section}`);
     tab.onclick = () => switchSection(section);
     container.appendChild(tab);
   });
@@ -850,10 +801,61 @@ function switchSection(section) {
   document.querySelectorAll('.section').forEach(sec => {
     sec.classList.remove('active');
   });
-  document.getElementById(`section-${section}`).classList.add('active');
+  const target = document.getElementById(`section-${section}`);
+  if (target) target.classList.add('active');
 }
 
-// ============ عرض الحروف ============
+// ============ تحديث نصوص الواجهة ============
+function updateUILanguage() {
+  const lang = currentLang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  safeSetText('mainTitle', t('mainTitle'));
+  safeSetText('subTitle', t('subTitle'));
+  safeSetText('titleLetters', t('titles.letters'));
+  safeSetText('titleFatha', t('titles.fatha'));
+  safeSetText('titleDamma', t('titles.damma'));
+  safeSetText('titleKasra', t('titles.kasra'));
+  safeSetText('titleTanween', t('titles.tanween'));
+  safeSetText('titleShadda', t('titles.shadda'));
+  safeSetText('titleWords2', t('titles.words2'));
+  safeSetText('titleWords3', t('titles.words3'));
+  safeSetText('word2Title', t('word2Title'));
+  safeSetText('word3Title', t('word3Title'));
+  safeSetText('listen2', t('listen'));
+  safeSetText('listen3', t('listen'));
+  safeSetText('clear2', t('clear'));
+  safeSetText('clear3', t('clear'));
+  safeSetText('random2', t('random'));
+  safeSetText('random3', t('random'));
+  safeSetText('footerText', t('footer'));
+  safeSetText('labelLang', t('labelLang'));
+  safeSetText('labelTheme', t('labelTheme'));
+  safeSetText('labelWhats', t('labelWhats'));
+}
+
+// ============ النطق ============
+function speak(text, lang) {
+  if (!('speechSynthesis' in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang || (currentLang === 'ar' ? 'ar-SA' : 'en-US');
+    utterance.rate = 0.8;
+    utterance.pitch = 1.1;
+    utterance.volume = 1;
+    const voices = window.speechSynthesis.getVoices();
+    const targetLang = utterance.lang.split('-')[0];
+    const voice = voices.find(v => v.lang && v.lang.startsWith(targetLang));
+    if (voice) utterance.voice = voice;
+    window.speechSynthesis.speak(utterance);
+  } catch (e) {
+    console.warn('Speech error:', e);
+  }
+}
+
+// ============ بطاقة الحرف ============
 function createLetterCard(letter, name, spokenText) {
   const card = document.createElement('div');
   card.className = 'letter-card';
@@ -870,8 +872,10 @@ function createLetterCard(letter, name, spokenText) {
   return card;
 }
 
+// ============ عرض الأقسام ============
 function renderLetters() {
   const grid = document.getElementById('lettersGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   const letters = currentLang === 'ar' ? ARABIC_LETTERS : ENGLISH_LETTERS;
   letters.forEach(item => {
@@ -881,6 +885,7 @@ function renderLetters() {
 
 function renderFatha() {
   const grid = document.getElementById('fathaGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   const letters = currentLang === 'ar' ? ARABIC_LETTERS : ENGLISH_LETTERS;
   letters.forEach(item => {
@@ -892,6 +897,7 @@ function renderFatha() {
 
 function renderDamma() {
   const grid = document.getElementById('dammaGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   const letters = currentLang === 'ar' ? ARABIC_LETTERS : ENGLISH_LETTERS;
   letters.forEach(item => {
@@ -903,6 +909,7 @@ function renderDamma() {
 
 function renderKasra() {
   const grid = document.getElementById('kasraGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   const letters = currentLang === 'ar' ? ARABIC_LETTERS : ENGLISH_LETTERS;
   letters.forEach(item => {
@@ -914,6 +921,7 @@ function renderKasra() {
 
 function renderTanween() {
   const grid = document.getElementById('tanweenGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   const letters = currentLang === 'ar' ? ARABIC_LETTERS : ENGLISH_LETTERS;
   letters.forEach(item => {
@@ -934,6 +942,7 @@ function renderTanween() {
 
 function renderShadda() {
   const grid = document.getElementById('shaddaGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   const letters = currentLang === 'ar' ? ARABIC_LETTERS : ENGLISH_LETTERS;
   letters.forEach(item => {
@@ -946,12 +955,13 @@ function renderShadda() {
 // ============ بناء الكلمات ============
 function renderLetterBank2() {
   const bank = document.getElementById('letterBank2');
+  if (!bank) return;
   bank.innerHTML = '';
   const letters = currentLang === 'ar' ? ARABIC_LETTERS : ENGLISH_LETTERS;
   letters.forEach(item => {
     const chip = document.createElement('div');
     chip.className = 'letter-chip';
-    chip.textContent = currentLang === 'ar' ? item.letter : item.letter;
+    chip.textContent = item.letter;
     chip.onclick = () => addLetter(2, currentLang === 'ar' ? item.letter : item.letter.toLowerCase());
     bank.appendChild(chip);
   });
@@ -959,12 +969,13 @@ function renderLetterBank2() {
 
 function renderLetterBank3() {
   const bank = document.getElementById('letterBank3');
+  if (!bank) return;
   bank.innerHTML = '';
   const letters = currentLang === 'ar' ? ARABIC_LETTERS : ENGLISH_LETTERS;
   letters.forEach(item => {
     const chip = document.createElement('div');
     chip.className = 'letter-chip';
-    chip.textContent = currentLang === 'ar' ? item.letter : item.letter;
+    chip.textContent = item.letter;
     chip.onclick = () => addLetter(3, currentLang === 'ar' ? item.letter : item.letter.toLowerCase());
     bank.appendChild(chip);
   });
@@ -991,14 +1002,16 @@ function addLetter(count, letter) {
 
 function renderWord2() {
   const display = document.getElementById('word2Display');
+  if (!display) return;
   display.innerHTML = '';
   for (let i = 0; i < 2; i++) {
     const slot = document.createElement('div');
     slot.className = 'word-slot' + (word2Letters[i] ? ' filled' : '');
     slot.textContent = word2Letters[i] || '⬜';
     if (word2Letters[i]) {
+      const idx = i;
       slot.onclick = () => {
-        word2Letters.splice(i, 1);
+        word2Letters.splice(idx, 1);
         renderWord2();
       };
     }
@@ -1009,14 +1022,16 @@ function renderWord2() {
 
 function renderWord3() {
   const display = document.getElementById('word3Display');
+  if (!display) return;
   display.innerHTML = '';
   for (let i = 0; i < 3; i++) {
     const slot = document.createElement('div');
     slot.className = 'word-slot' + (word3Letters[i] ? ' filled' : '');
     slot.textContent = word3Letters[i] || '⬜';
     if (word3Letters[i]) {
+      const idx = i;
       slot.onclick = () => {
-        word3Letters.splice(i, 1);
+        word3Letters.splice(idx, 1);
         renderWord3();
       };
     }
@@ -1027,15 +1042,16 @@ function renderWord3() {
 
 function checkWord(count) {
   const result = document.getElementById(`word${count}Result`);
+  if (!result) return;
   const letters = count === 2 ? word2Letters : word3Letters;
-  const word = letters.join('');
 
-  if (letters.length < count || letters.includes(undefined)) {
+  if (letters.length < count) {
     result.textContent = '';
     result.className = 'word-result';
     return;
   }
 
+  const word = letters.join('');
   const wordsList = currentLang === 'ar'
     ? (count === 2 ? AR_WORDS_2 : AR_WORDS_3)
     : (count === 2 ? EN_WORDS_2 : EN_WORDS_3);
@@ -1043,7 +1059,7 @@ function checkWord(count) {
   if (wordsList.includes(word)) {
     result.textContent = t('successWord') + ': ' + word;
     result.className = 'word-result success';
-    speakWord(count);
+    speak(word, currentLang === 'ar' ? 'ar-SA' : 'en-US');
   } else {
     result.textContent = t('notWord');
     result.className = 'word-result error';
@@ -1074,8 +1090,8 @@ function randomWord(count) {
   const wordsList = currentLang === 'ar'
     ? (count === 2 ? AR_WORDS_2 : AR_WORDS_3)
     : (count === 2 ? EN_WORDS_2 : EN_WORDS_3);
-  const randomWord = wordsList[Math.floor(Math.random() * wordsList.length)];
-  const letters = randomWord.split('');
+  const randomW = wordsList[Math.floor(Math.random() * wordsList.length)];
+  const letters = randomW.split('');
 
   if (count === 2) {
     word2Letters = letters.slice(0, 2);
@@ -1084,49 +1100,22 @@ function randomWord(count) {
     word3Letters = letters.slice(0, 3);
     renderWord3();
   }
-  speak(randomWord, currentLang === 'ar' ? 'ar-SA' : 'en-US');
-}
-
-// ============ النطق ============
-let currentUtterance = null;
-
-function speak(text, lang = 'ar-SA') {
-  if (!('speechSynthesis' in window)) {
-    showToast(currentLang === 'ar' ? '⚠️ النطق غير مدعوم في متصفحك' : '⚠️ Speech not supported');
-    return;
-  }
-
-  window.speechSynthesis.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = lang;
-  utterance.rate = 0.8;
-  utterance.pitch = 1.1;
-  utterance.volume = 1;
-
-  // محاولة إيجاد صوت عربي أو إنجليزي
-  const voices = window.speechSynthesis.getVoices();
-  const targetLang = lang.split('-')[0];
-  const voice = voices.find(v => v.lang.startsWith(targetLang));
-  if (voice) utterance.voice = voice;
-
-  currentUtterance = utterance;
-  window.speechSynthesis.speak(utterance);
-}
-
-// تحميل الأصوات مسبقاً
-if ('speechSynthesis' in window) {
-  window.speechSynthesis.onvoiceschanged = () => {
-    window.speechSynthesis.getVoices();
-  };
+  speak(randomW, currentLang === 'ar' ? 'ar-SA' : 'en-US');
 }
 
 // ============ تبديل اللغة ============
 function toggleLanguage() {
   currentLang = currentLang === 'ar' ? 'en' : 'ar';
-  localStorage.setItem('kids_lang', currentLang);
-  updateUILanguage();
+  try {
+    localStorage.setItem('kids_lang', currentLang);
+  } catch (e) {}
+
+  // إعادة بناء كل شيء بالترتيب الصحيح
   createTabs();
+  updateUILanguage();
+  renderAll();
+  switchSection(currentSection);
+  updateThemeButton();
   showToast(t('languageChanged'));
 }
 
@@ -1134,13 +1123,24 @@ function toggleLanguage() {
 function toggleTheme() {
   currentTheme = currentTheme === 'light' ? 'dark' : 'light';
   document.body.classList.toggle('dark-mode', currentTheme === 'dark');
-  localStorage.setItem('kids_theme', currentTheme);
-  const themeBtn = document.querySelector('.fab-theme');
-  themeBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+  try {
+    localStorage.setItem('kids_theme', currentTheme);
+  } catch (e) {}
+  updateThemeButton();
   showToast(currentTheme === 'dark' ? t('themeDark') : t('themeLight'));
 }
 
-// ============ عرض جميع الأقسام ============
+function updateThemeButton() {
+  const themeBtn = document.querySelector('.fab-theme');
+  if (themeBtn) {
+    // إبقاء الأيقونة والأيقونة النصية
+    const label = document.getElementById('labelTheme');
+    themeBtn.firstChild.nodeValue = currentTheme === 'dark' ? '☀️' : '🌙';
+    if (label) label.textContent = t('labelTheme');
+  }
+}
+
+// ============ عرض كل شيء ============
 function renderAll() {
   renderLetters();
   renderFatha();
@@ -1157,6 +1157,7 @@ function renderAll() {
 // ============ Toast ============
 function showToast(message) {
   const toast = document.getElementById('toast');
+  if (!toast) return;
   toast.textContent = message;
   toast.classList.add('show');
   clearTimeout(toast._timeout);
@@ -1165,35 +1166,98 @@ function showToast(message) {
   }, 2500);
 }
 
-// ============ التهيئة ============
-window.addEventListener('DOMContentLoaded', () => {
-  // تحميل الإعدادات المحفوظة
-  const savedLang = localStorage.getItem('kids_lang');
-  const savedTheme = localStorage.getItem('kids_theme');
+// ============ التهيئة الآمنة ============
+function initApp() {
+  try {
+    // 1. قراءة الإعدادات المحفوظة
+    let savedLang = null;
+    let savedTheme = null;
+    try {
+      savedLang = localStorage.getItem('kids_lang');
+      savedTheme = localStorage.getItem('kids_theme');
+    } catch (e) {
+      console.warn('localStorage غير متاح:', e);
+    }
 
-  if (savedLang) currentLang = savedLang;
-  if (savedTheme) {
-    currentTheme = savedTheme;
-    if (currentTheme === 'dark') {
+    if (savedLang === 'ar' || savedLang === 'en') {
+      currentLang = savedLang;
+    }
+
+    if (savedTheme === 'dark') {
+      currentTheme = 'dark';
       document.body.classList.add('dark-mode');
-      document.querySelector('.fab-theme').textContent = '☀️';
+    } else {
+      currentTheme = 'light';
+      document.body.classList.remove('dark-mode');
+    }
+
+    // 2. تعيين الاتجاه واللغة
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+    // 3. بناء التبويبات أولاً
+    createTabs();
+
+    // 4. تحديث نصوص الواجهة
+    updateUILanguage();
+
+    // 5. عرض الأقسام
+    renderAll();
+
+    // 6. تفعيل القسم الافتراضي
+    switchSection(currentSection);
+
+    // 7. تحديث أيقونة المظهر
+    updateThemeButton();
+
+    // 8. تحميل الأصوات
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+
+    console.log('✅ تم تهيئة التطبيق - اللغة:', currentLang, '| المظهر:', currentTheme);
+  } catch (error) {
+    console.error('❌ خطأ في التهيئة:', error);
+    // إصلاح احتياطي: إعادة تعيين الإعدادات
+    try {
+      currentLang = 'ar';
+      currentTheme = 'light';
+      try {
+        localStorage.removeItem('kids_lang');
+        localStorage.removeItem('kids_theme');
+      } catch (e) {}
+      document.body.classList.remove('dark-mode');
+      document.documentElement.lang = 'ar';
+      document.documentElement.dir = 'rtl';
+      createTabs();
+      updateUILanguage();
+      renderAll();
+      switchSection('letters');
+      updateThemeButton();
+    } catch (e2) {
+      console.error('❌ فشل الإصلاح الاحتياطي:', e2);
     }
   }
+}
 
-  createTabs();
-  updateUILanguage();
-  renderAll();
+// ============ تشغيل التهيئة ============
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  // الصفحة محمّلة مسبقاً
+  initApp();
+}
 
-  // إعداد التبويبات
-  switchSection('letters');
-});
-
-// منع التمرير عند فتح لوحة المفاتيح على الجوال
-window.addEventListener('touchmove', (e) => {
-  if (e.target.closest('.tabs-container')) {
-    e.stopPropagation();
+// معالجة استعادة الصفحة من bfcache (زر الرجوع في المتصفح)
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) {
+    // الصفحة مستعادة من الكاش - أعد التهيئة
+    initApp();
   }
-}, { passive: true });
+});
 </script>
 </body>
 </html>
